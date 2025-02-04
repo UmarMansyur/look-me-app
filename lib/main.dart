@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:look_me/screens/auth/forgot_password.dart';
+import 'package:look_me/screens/auth/login_screen.dart';
 import 'package:look_me/screens/home/home_screen.dart';
 
 void main() {
@@ -21,6 +23,8 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/': (context) => const HomeScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/forgot-password': (context) => const ForgotPasswordScreen(),
       },
     );
   }

@@ -7,9 +7,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: ListView(
         children: [
           HomeHeader(),
           HomeBody(),

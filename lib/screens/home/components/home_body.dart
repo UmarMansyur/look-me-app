@@ -56,38 +56,40 @@ class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                // heightnya 30% dari height
-                height: MediaQuery.of(context).size.height * 0.4,
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: PageView.builder(
-                  controller: _pageController,
-                  onPageChanged: (index) {
-                    setState(() {
-                      currentIndex = index;
-                    });
-                  },
-                  itemCount: imagePath.length,
-                  itemBuilder: (context, index) {
-                    return SvgPicture.asset(
-                      imagePath[index],
-                      width: MediaQuery.of(context).size.width,
-                    );
-                  },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  // heightnya 30% dari height
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  child: PageView.builder(
+                    controller: _pageController,
+                    onPageChanged: (index) {
+                      setState(() {
+                        currentIndex = index;
+                      });
+                    },
+                    itemCount: imagePath.length,
+                    itemBuilder: (context, index) {
+                      return SvgPicture.asset(
+                        imagePath[index],
+                        width: MediaQuery.of(context).size.width,
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
+              ],
+            ),
+            Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -117,17 +119,14 @@ class _HomeBodyState extends State<HomeBody> {
                     ),
               ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: RichText(
+            RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
                     text: '${title[currentIndex]['title'] ?? ''}\n',
                     style: const TextStyle(
                       fontFamily: 'Poppins',
-                      fontSize: 28,
+                      fontSize: 30,
                       fontWeight: FontWeight.w300,
                       color: Color(0xFF0B3D41),
                     ),
@@ -137,7 +136,7 @@ class _HomeBodyState extends State<HomeBody> {
                     text: title[currentIndex]['subtitle'] ?? '',
                     style: const TextStyle(
                       fontFamily: 'Poppins',
-                      fontSize: 28,
+                      fontSize: 30,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF0B3D41),
                     ),
@@ -145,11 +144,8 @@ class _HomeBodyState extends State<HomeBody> {
                 ],
               ),
             ),
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Text(title[currentIndex]['desc'] ?? '',
+            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+            Text(title[currentIndex]['desc'] ?? '',
                 textAlign: TextAlign.right,
                 style: const TextStyle(
                   fontFamily: 'Poppins',
@@ -157,21 +153,15 @@ class _HomeBodyState extends State<HomeBody> {
                   fontWeight: FontWeight.w300,
                   color: Colors.black,
                 )),
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Row(
+            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+            Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 GestureDetector(
                   onTap: () {
                     if (currentIndex == imagePath.length - 1) {
                       // Navigasi ke halaman berikutnya
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => NextScreen()),
-                      // );
+                      Navigator.pushNamed(context, '/login');
                     } else {
                       _pageController.nextPage(
                         duration: const Duration(milliseconds: 300),
@@ -183,15 +173,16 @@ class _HomeBodyState extends State<HomeBody> {
                   child: Container(
                     // berikan drop shadow
                     // minimal width 100
-                    width: MediaQuery.of(context).size.width * 0.5,
+                    width: MediaQuery.of(context).size.width * 0.6,
                     decoration: BoxDecoration(
                       color: const Color(0xFF2CD097),
                       borderRadius: BorderRadius.circular(50),
                       // minimal width 100
                       boxShadow: [
                         BoxShadow(
+                          // ignore: deprecated_member_use
                           color: const Color(0xFF2CD097).withOpacity(0.5),
-                          blurRadius: 40,
+                          blurRadius: 10,
                         ),
                       ],
                     ),
@@ -214,8 +205,8 @@ class _HomeBodyState extends State<HomeBody> {
                 ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
