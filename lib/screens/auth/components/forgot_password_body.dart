@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:look_me/screens/auth/components/remember_password.dart';
 import 'package:look_me/styles/styles.dart';
 
 class ForgotPasswordBody extends StatefulWidget {
@@ -20,9 +21,39 @@ class _ForgotPasswordBodyState extends State<ForgotPasswordBody> {
         children: [
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.4,
-            child: SvgPicture.asset('assets/images/auth/login.svg'),
+            child: SvgPicture.asset('assets/images/auth/forgot-password.svg'),
           ),
 
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text:
+                      'Masukkan email anda, sistem kami akan mengirimkan \n kode ',
+                  style: AuthStyles.forgotPasswordStyle.copyWith(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+                TextSpan(
+                  text: 'OTP',
+                  style: AuthStyles.forgotPasswordStyle.copyWith(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  text: ' untuk mengubah password anda!',
+                  style: AuthStyles.forgotPasswordStyle.copyWith(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20.0),
           // buatkan saya form login
           Form(
             child: Column(
@@ -30,72 +61,37 @@ class _ForgotPasswordBodyState extends State<ForgotPasswordBody> {
               children: [
                 // hias textformfield dengan border radius 10.0 dan berikan border dengan warna biru
                 const Text(
-                  'Username',
+                  'Email',
                   textAlign: TextAlign.left,
                   style: AuthStyles.labelStyle,
                 ),
-                const SizedBox(height: 10.0),
+                const SizedBox(height: 20.0),
                 // beri icon di dalam textformfield dan berikan icon dengan warna biru
                 TextFormField(
                   decoration: AuthStyles.textFieldDecoration(
-                    hintText: 'Masukkan Username',
-                    prefixIcon: Icons.person,
+                    hintText: 'Masukkan Email',
+                    prefixIcon: Icons.email,
                   ),
                 ),
-                const SizedBox(height: 10.0),
-                const Text(
-                  'Password',
-                  textAlign: TextAlign.left,
-                  style: AuthStyles.labelStyle,
-                ),
-                const SizedBox(height: 10.0),
-                // beri tombol show password, jangan lupa text ubah menjadi password
-                TextFormField(
-                  obscureText: !isPasswordVisible,
-                  decoration: AuthStyles.textFieldDecoration(
-                    hintText: 'Masukkan Password',
-                    prefixIcon: Icons.lock,
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isPasswordVisible = !isPasswordVisible;
-                        });
-                      },
-                      icon: Icon(
-                        !isPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: Colors.black12,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20.0),
+
+                const SizedBox(height: 40.0),
                 // container button login
                 SizedBox(
                   width: double.infinity,
-                  height: 60.0,
+                  height: 55.0,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/verify-otp');
+                    },
                     style: AuthStyles.loginButtonStyle,
                     child: const Text(
-                      'Login',
+                      'Kirim OTP',
                       style: AuthStyles.buttonTextStyle,
                     ),
                   ),
                 ),
                 const SizedBox(height: 20.0),
-                // buatkan text untuk register
-                // 608384
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Forgot Password ?',
-                      style: AuthStyles.forgotPasswordStyle,
-                    ),
-                  ],
-                ),
+                const RememberPassword()
               ],
             ),
           ),

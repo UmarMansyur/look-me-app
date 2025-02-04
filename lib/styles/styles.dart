@@ -7,14 +7,14 @@ class AuthStyles {
   static const TextStyle labelStyle = TextStyle(
     fontFamily: 'Poppins',
     fontSize: 16.0,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w400,
     color: primaryColor,
   );
 
   static const TextStyle buttonTextStyle = TextStyle(
-    fontFamily: 'Roboto',
-    fontSize: 24.0,
-    fontWeight: FontWeight.normal,
+    fontFamily: 'Poppins',
+    fontSize: 16.0,
+    fontWeight: FontWeight.w500,
     color: Colors.white,
   );
 
@@ -49,7 +49,10 @@ class AuthStyles {
         size: 24.0,
       ),
       hintText: hintText,
-      hintStyle: const TextStyle(color: Colors.black12),
+      hintStyle: const TextStyle(
+        color: Colors.black26,
+        fontWeight: FontWeight.w300,
+      ),
       suffixIcon: suffixIcon,
     );
   }

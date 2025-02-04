@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:look_me/screens/home/components/home_body.dart';
+import 'package:look_me/screens/auth/components/verify.dart';
 import 'package:look_me/screens/home/components/home_header.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class VerifyScreen extends StatelessWidget {
+  const VerifyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: ListView(
         children: const [
-          HomeHeader(),
-          HomeBody(),
+          HomeHeader(
+            topPadding: 0.0,
+          ),
+          Verify(),
         ],
       ),
     );

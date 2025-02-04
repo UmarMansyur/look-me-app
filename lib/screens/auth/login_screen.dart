@@ -19,10 +19,10 @@ class LoginScreen extends StatelessWidget {
               ),
             ],
           ),
-          HomeHeader(
+          const HomeHeader(
             topPadding: 0.0,
           ),
-          LoginBody(),
+          const LoginBody(),
         ],
       ),
     );
