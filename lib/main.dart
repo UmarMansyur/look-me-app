@@ -3,6 +3,7 @@ import 'package:look_me/screens/auth/forgot_password.dart';
 import 'package:look_me/screens/auth/login_screen.dart';
 import 'package:look_me/screens/auth/reset_password.dart';
 import 'package:look_me/screens/auth/verify_screen.dart';
+import 'package:look_me/screens/dashboard/dashboard_screen.dart';
 import 'package:look_me/screens/home/home_screen.dart';
 
 void main() {
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'LookMe',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: '/dashboard',
       theme: ThemeData(
         fontFamily: 'Poppins',
         scaffoldBackgroundColor: Colors.white,
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         '/forgot-password': (context) => const ForgotPasswordScreen(),
         '/verify-otp': (context) => const VerifyScreen(),
         '/reset-password': (context) => const ResetPassword(),
+        '/dashboard': (context) => const DashboardScreen(),
       },
     );
   }

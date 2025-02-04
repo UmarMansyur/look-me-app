@@ -76,7 +76,9 @@ class _LoginBodyState extends State<LoginBody> {
                   width: double.infinity,
                   height: 55.0,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, '/dashboard');
+                    },
                     style: AuthStyles.loginButtonStyle,
                     child: const Text(
                       'Login',
