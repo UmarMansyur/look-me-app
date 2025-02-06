@@ -20,6 +20,8 @@ class _DashboardHeaderState extends State<DashboardHeader> {
         Row(
           children: [
             const Avatar(
+              width: 45,
+              height: 45,
               backgroundColor: Colors.grey,
               imageUrl:
                   'https://ik.imagekit.io/8zmr0xxik/Colorful_Gradient_Background_Man_3D_Avatar_4F0kSVV0X.png?updatedAt=1709258633386',
@@ -56,9 +58,7 @@ class _DashboardHeaderState extends State<DashboardHeader> {
         ),
         HeaderIcon(
           icon: Icons.notifications,
-          onPressed: () {
-            print('Notifikasi ditekan');
-          },
+          onPressed: () {},
         ),
       ],
     );

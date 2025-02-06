@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -63,7 +65,7 @@ class _InformationCardState extends State<InformationCard> {
                               item['title'] ?? '',
                               style: const TextStyle(
                                 fontSize: 14,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
@@ -79,7 +81,7 @@ class _InformationCardState extends State<InformationCard> {
                               item['amount'] ?? '0',
                               style: const TextStyle(
                                 fontSize: 48,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w700,
                                 color: Color(0xFF0B3D41),
                               ),
                             ),
@@ -90,7 +92,7 @@ class _InformationCardState extends State<InformationCard> {
                                 'hari',
                                 style: TextStyle(
                                   fontSize: 18,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w700,
                                   color: Color(0xFF0B3D41),
                                 ),
                               ),
