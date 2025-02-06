@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:look_me/components/parent.dart';
 import 'package:look_me/screens/home/components/home_body.dart';
 import 'package:look_me/screens/home/components/home_header.dart';
 
@@ -7,10 +8,10 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: ListView(
-        children: const [
+    return const Parent(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        children: [
           HomeHeader(),
           HomeBody(),
         ],

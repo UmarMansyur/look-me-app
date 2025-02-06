@@ -4,7 +4,10 @@ import 'package:look_me/screens/auth/login_screen.dart';
 import 'package:look_me/screens/auth/reset_password.dart';
 import 'package:look_me/screens/auth/verify_screen.dart';
 import 'package:look_me/screens/dashboard/dashboard_screen.dart';
+import 'package:look_me/screens/detail_message/detail_message_screen.dart';
 import 'package:look_me/screens/home/home_screen.dart';
+import 'package:look_me/screens/messages/message_screen.dart';
+import 'package:look_me/screens/scan/scan_face.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,6 +34,9 @@ class MyApp extends StatelessWidget {
         '/verify-otp': (context) => const VerifyScreen(),
         '/reset-password': (context) => const ResetPassword(),
         '/dashboard': (context) => const DashboardScreen(),
+        '/message': (context) => const MessageScreen(),
+        '/detail-message': (context) => const DetailMessageScreen(),
+        '/scan-face': (context) => const ScanFace(),
       },
     );
   }

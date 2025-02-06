@@ -33,9 +33,9 @@ class _InformationCardState extends State<InformationCard> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: informationCard
               .map((item) => Container(
-                    width: MediaQuery.of(context).size.width * 0.45,
+                    width: MediaQuery.of(context).size.width * 0.48,
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
+                      horizontal: 5,
                       vertical: 20,
                     ),
                     decoration: BoxDecoration(

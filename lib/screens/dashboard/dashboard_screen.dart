@@ -16,14 +16,18 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Parent(
-      child: Column(
-        children: [
-          DashboardHeader(),
-          DashboardCard(),
-          InformationCard(),
-          ChartCard(),
-          HistoryCard()
+    return Parent(
+      child: ListView(
+        children: const [
+          Column(
+            children: [
+              DashboardHeader(),
+              DashboardCard(),
+              InformationCard(),
+              ChartCard(),
+              HistoryCard()
+            ],
+          ),
         ],
       ),
     );
