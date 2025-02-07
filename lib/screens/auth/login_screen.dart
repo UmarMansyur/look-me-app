@@ -8,21 +8,13 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFEBF3F1),
       body: ListView(
-        children: [
-          // tombol back
-          Row(
-            children: [
-              IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(Icons.arrow_back),
-              ),
-            ],
-          ),
-          const HomeHeader(
+        children: const [
+          HomeHeader(
             topPadding: 0.0,
           ),
-          const LoginBody(),
+          LoginBody(),
         ],
       ),
     );

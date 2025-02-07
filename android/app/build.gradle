@@ -10,6 +10,21 @@ android {
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
+    signingConfigs {
+        release {
+            keyAlias 'upload'
+            keyPassword 'khanazulfana'
+            storeFile file('upload-keystore.jks')
+            storePassword 'khanazulfana'
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -18,6 +33,7 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
+    
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
@@ -29,6 +45,12 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
+    
+
+    buildFeatures {
+        buildConfig = true
+    }
+
 
     buildTypes {
         release {

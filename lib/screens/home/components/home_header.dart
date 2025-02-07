@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class HomeHeader extends StatelessWidget {
   const HomeHeader({
     super.key,
-    this.topPadding = 40.0,
-    this.leftPadding = 20.0,
+    this.topPadding = 10.0,
+    this.leftPadding = 10.0,
   });
 
   final double topPadding;

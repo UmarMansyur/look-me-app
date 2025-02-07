@@ -89,7 +89,7 @@ class _ParentState extends State<Parent> {
         notchMargin: 8,
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(
             4,
             (index) => _buildNavItem(index),

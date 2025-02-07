@@ -13,9 +13,9 @@ class HeaderIcon extends StatelessWidget {
       child: IconButton(
         iconSize: 30,
         padding: EdgeInsets.zero,
-        splashColor: Colors.transparent, // Menghilangkan efek splash
-        highlightColor: Colors.transparent, // Menghilangkan efek highlight
-        hoverColor: Colors.transparent, // Menghilangkan efek hover
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,
         icon: Icon(icon),
         onPressed: onPressed,
       ),

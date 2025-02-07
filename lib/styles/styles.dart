@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 
 class AuthStyles {
   static const Color primaryColor = Color(0xFF608384);
+  static const Color primary2Color = Color(0xFF0A3C40);
   static const Color buttonColor = Color(0xFF2CD097);
+  static const primaryGradientColor = [
+    Color(0xFF0A3C40),
+    Color(0xFF125F55),
+  ];
 
   static const TextStyle labelStyle = TextStyle(
     fontFamily: 'Poppins',
@@ -32,16 +37,16 @@ class AuthStyles {
     Widget? suffixIcon,
   }) {
     return InputDecoration(
-      fillColor: Colors.white,
-      focusColor: Colors.white,
+      fillColor: const Color(0xFFEBF3F1),
+      focusColor: const Color(0xFFEBF3F1),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10.0),
-        borderSide: const BorderSide(color: primaryColor),
+        borderRadius: BorderRadius.circular(20.0),
+        borderSide: const BorderSide(color: Color(0xFFEBF3F1)),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(20.0),
         borderSide: const BorderSide(
-          color: primaryColor,
+          color: Color(0xFFEBF3F1),
           width: 1.0,
         ),
       ),
@@ -60,9 +65,9 @@ class AuthStyles {
   }
 
   static ButtonStyle loginButtonStyle = ElevatedButton.styleFrom(
-    backgroundColor: buttonColor,
+    backgroundColor: primary2Color,
+    shadowColor: primary2Color.withOpacity(0.5),
     elevation: 10.0,
-    shadowColor: buttonColor.withOpacity(0.5),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(50.0),
     ),

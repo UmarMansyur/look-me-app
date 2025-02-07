@@ -1,3 +1,14 @@
+buildscript {
+    repositories {
+        google()  // For Google's Maven repository
+        mavenCentral()  // For general dependencies
+    }
+    
+    dependencies {
+        classpath 'com.google.gms:google-services:4.3.15'
+    }
+}
+
 allprojects {
     repositories {
         google()
@@ -5,6 +16,7 @@ allprojects {
     }
 }
 
+// Rest of your build.gradle file remains the same
 rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"

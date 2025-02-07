@@ -7,12 +7,13 @@ import 'package:look_me/screens/dashboard/dashboard_screen.dart';
 import 'package:look_me/screens/detail_message/detail_message_screen.dart';
 import 'package:look_me/screens/home/home_screen.dart';
 import 'package:look_me/screens/messages/message_screen.dart';
+import 'package:look_me/screens/notify/danger_screen.dart';
+import 'package:look_me/screens/notify/success_screen.dart';
 import 'package:look_me/screens/scan/scan_face.dart';
 
 void main() {
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'LookMe',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/dashboard',
+      initialRoute: '/danger',
       theme: ThemeData(
         fontFamily: 'Poppins',
         scaffoldBackgroundColor: Colors.white,
@@ -37,6 +38,8 @@ class MyApp extends StatelessWidget {
         '/message': (context) => const MessageScreen(),
         '/detail-message': (context) => const DetailMessageScreen(),
         '/scan-face': (context) => const ScanFace(),
+        '/success': (context) => const SuccessScreen(),
+        '/danger': (context) => const DangerScreen(),
       },
     );
   }
