@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:look_me/styles/styles.dart';
 
 class Parent extends StatefulWidget {
   const Parent({
     super.key,
     required this.child,
     this.padding = const EdgeInsets.all(5),
+    this.backgroundColor,
   });
 
   final Widget child;
   final EdgeInsets padding;
+  final Color? backgroundColor;
 
   @override
   State<Parent> createState() => _ParentState();
@@ -46,6 +49,7 @@ class _ParentState extends State<Parent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: widget.backgroundColor,
       body: SafeArea(
         child: Padding(
           padding: widget.padding,
@@ -65,12 +69,13 @@ class _ParentState extends State<Parent> {
             boxShadow: [
               BoxShadow(
                 color: const Color(0xFF0B4042).withOpacity(0.1),
-                blurRadius: 10,
+                blurRadius: 45,
+                offset: const Offset(0, 4),
               ),
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(15),
             child: SvgPicture.asset(
               'assets/images/icons/face.svg',
               fit: BoxFit.contain,
@@ -85,7 +90,14 @@ class _ParentState extends State<Parent> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         color: Colors.white,
-        shadowColor: Colors.white,
+        shadowColor: AuthStyles.primaryColor,
+        elevation: 10,
+        shape: const AutomaticNotchedShape(RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(12),
+            topRight: Radius.circular(12),
+          ),
+        )),
         notchMargin: 8,
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Row(

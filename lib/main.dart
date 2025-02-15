@@ -5,10 +5,13 @@ import 'package:look_me/screens/auth/reset_password.dart';
 import 'package:look_me/screens/auth/verify_screen.dart';
 import 'package:look_me/screens/dashboard/dashboard_screen.dart';
 import 'package:look_me/screens/detail_message/detail_message_screen.dart';
+import 'package:look_me/screens/history/history_screen.dart';
 import 'package:look_me/screens/home/home_screen.dart';
 import 'package:look_me/screens/messages/message_screen.dart';
 import 'package:look_me/screens/notify/danger_screen.dart';
 import 'package:look_me/screens/notify/success_screen.dart';
+import 'package:look_me/screens/permission/add_permission.dart';
+import 'package:look_me/screens/permission/permission_screen.dart';
 import 'package:look_me/screens/scan/scan_face.dart';
 
 void main() {
@@ -23,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'LookMe',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/danger',
+      initialRoute: '/permission',
       theme: ThemeData(
         fontFamily: 'Poppins',
         scaffoldBackgroundColor: Colors.white,
@@ -40,6 +43,9 @@ class MyApp extends StatelessWidget {
         '/scan-face': (context) => const ScanFace(),
         '/success': (context) => const SuccessScreen(),
         '/danger': (context) => const DangerScreen(),
+        '/permission': (context) => const PermissionScreen(),
+        '/add-permission': (context) => const AddPermissionScreen(),
+        '/history': (context) => const HistoryScreen(),
       },
     );
   }

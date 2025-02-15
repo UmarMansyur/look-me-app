@@ -33,7 +33,7 @@ class _StepsState extends State<Steps> {
       child: Column(
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.85,
+            height: MediaQuery.of(context).size.height * 0.7,
             child: PageView(
               controller: _pageController,
               onPageChanged: (index) {
@@ -48,7 +48,6 @@ class _StepsState extends State<Steps> {
               ],
             ),
           ),
-          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
             child: Row(

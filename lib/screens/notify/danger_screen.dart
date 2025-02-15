@@ -9,7 +9,7 @@ class DangerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFECEFEE),
+      backgroundColor: const Color.fromRGBO(255, 236, 239, 1.0),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -21,11 +21,18 @@ class DangerScreen extends StatelessWidget {
               children: [
                 Text(
                   'Verifikasi Gagal!',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500, color: Colors.black87),
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black87,
+                  ),
                 ),
                 Text(
                   'Pastikan pencahayaan cukup dan wajah terlihat jelas',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300, color: Colors.black54),
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.black54),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -44,7 +51,8 @@ class DangerScreen extends StatelessWidget {
                     child: SizedBox(
                       height: 180,
                       width: 180,
-                      child: SvgPicture.asset('assets/images/notify/danger.svg'),
+                      child:
+                          SvgPicture.asset('assets/images/notify/danger.svg'),
                     ),
                   ),
                 ),
@@ -52,15 +60,26 @@ class DangerScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(50),
                     gradient: const LinearGradient(
                       colors: AuthStyles.primaryGradientColor,
                     ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.green.withOpacity(0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
                   ),
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ScanFace()));
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ScanFace()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       shadowColor: Colors.transparent,
