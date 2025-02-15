@@ -13,9 +13,18 @@ import 'package:look_me/screens/notify/success_screen.dart';
 import 'package:look_me/screens/permission/add_permission.dart';
 import 'package:look_me/screens/permission/permission_screen.dart';
 import 'package:look_me/screens/scan/scan_face.dart';
+import 'package:look_me/store/session.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => SessionStore()),
+      ],
+      child: const MyApp(),
+    )
+  );
 }
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -26,11 +35,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'LookMe',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/permission',
+      initialRoute: '/login',
       theme: ThemeData(
         fontFamily: 'Poppins',
         scaffoldBackgroundColor: Colors.white,
       ),
+      // protect route when user is not logged in
       routes: {
         '/': (context) => const HomeScreen(),
         '/login': (context) => const LoginScreen(),
