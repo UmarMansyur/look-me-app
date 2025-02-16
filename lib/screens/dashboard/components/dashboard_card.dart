@@ -2,10 +2,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
 
-class DashboardCard extends StatelessWidget {
-  const DashboardCard({super.key});
+class DashboardCard extends StatefulWidget {
+  final Map<String, dynamic> data;
+  const DashboardCard({super.key, required this.data});
 
+  @override
+  State<DashboardCard> createState() => _DashboardCardState();
+}
+
+class _DashboardCardState extends State<DashboardCard> {
   String _getHariIni() {
     List<String> hari = [
       'Senin',
@@ -21,6 +28,45 @@ class DashboardCard extends StatelessWidget {
     int dayIndex = DateTime.now().weekday - 1;
     return hari[dayIndex];
   }
+
+  String _currentLocation = 'Memuat lokasi...';
+
+  Future<void> _getCurrentLocationFromGPSGoogle() async {
+    try {
+      // Check location permission
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          setState(() {
+            _currentLocation = 'Izin lokasi ditolak';
+          });
+          return;
+        }
+      }
+
+      // Get current position
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      setState(() {
+        _currentLocation = '${position.latitude}, ${position.longitude}';
+      });
+    } catch (e) {
+      setState(() {
+        _currentLocation = 'Gagal mendapatkan lokasi';
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocationFromGPSGoogle();
+  }
+
+  // get data from api
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +110,14 @@ class DashboardCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Waktu Kehadiran:',
                           style: TextStyle(
                             color: Colors.white,
@@ -79,20 +125,22 @@ class DashboardCard extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Row(
                           children: [
                             Text(
-                              '10:00 WIB ',
-                              style: TextStyle(
+                              widget.data['data']?['today_present']
+                                      ?['check_in'] ??
+                                  'Tidak Ada',
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Roboto',
                               ),
                             ),
-                            SizedBox(width: 2),
-                            Icon(
+                            const SizedBox(width: 2),
+                            const Icon(
                               Icons.watch_later_outlined,
                               color: Colors.white,
                               size: 24,
@@ -104,15 +152,15 @@ class DashboardCard extends StatelessWidget {
                     Column(
                       children: [
                         // icon map
-                        Icon(
+                        const Icon(
                           Icons.map_outlined,
                           color: Colors.white,
                           size: 24,
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Text(
-                          '123123, 123124',
-                          style: TextStyle(
+                          _currentLocation,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,
                             fontWeight: FontWeight.w500,

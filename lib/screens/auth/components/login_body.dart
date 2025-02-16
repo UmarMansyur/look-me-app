@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:look_me/screens/auth/components/login_button.dart';
+import 'package:look_me/network/api/auth.dart';
+import 'package:look_me/store/token.dart';
 import 'package:look_me/styles/styles.dart';
+import 'package:look_me/store/session.dart';
+import 'package:provider/provider.dart';
+import 'dart:convert';
 
 class LoginBody extends StatefulWidget {
   const LoginBody({super.key});
@@ -105,8 +109,36 @@ class _LoginBodyState extends State<LoginBody> {
           SizedBox(
             width: double.infinity,
             height: 55.0,
-            child: LoginButton(
-                email: emailController.text, password: passwordController.text),
+            child: ElevatedButton(
+              onPressed: () {
+                final currentContext = context;
+                AuthApi.login(emailController.text, passwordController.text)
+                    .then((response) async {
+                  if (response?['status'] == true) {
+                    await TokenStore.saveToken(json.encode(response?['data']));
+                    final data = await TokenStore.decodeToken();
+                    if (!currentContext.mounted) return;
+                    Provider.of<SessionStore>(currentContext, listen: false)
+                        .setUser(data?['data']);
+                    Navigator.pushReplacementNamed(
+                        currentContext, '/dashboard');
+                  } else {
+                    if (!currentContext.mounted) return;
+                    ScaffoldMessenger.of(currentContext).showSnackBar(
+                      SnackBar(
+                        content: Text(response?['message'] ?? 'Login failed'),
+                        backgroundColor: const Color(0xFFE81D1D),
+                      ),
+                    );
+                  }
+                });
+              },
+              style: AuthStyles.loginButtonStyle,
+              child: const Text(
+                'Login',
+                style: AuthStyles.buttonTextStyle,
+              ),
+            ),
           ),
           const SizedBox(height: 5.0),
           Row(

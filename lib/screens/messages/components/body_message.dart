@@ -2,9 +2,34 @@
 
 import 'package:flutter/material.dart';
 import 'package:look_me/components/avatar.dart';
+import 'package:look_me/network/api.dart';
 
-class BodyMessage extends StatelessWidget {
+class BodyMessage extends StatefulWidget {
   const BodyMessage({super.key});
+
+  @override
+  State<BodyMessage> createState() => _BodyMessageState();
+}
+
+class _BodyMessageState extends State<BodyMessage> {
+  List<dynamic> _messages = [];
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _getData();
+  }
+
+  Future<void> _getData([String? search]) async {
+    final endpoint = search != null && search.isNotEmpty
+        ? 'warning-letter/pegawai?search=$search'
+        : 'warning-letter/pegawai';
+    final response = await Api.getRequest(endpoint, true);
+    setState(() {
+      _messages = response?['data'] ?? [];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +38,13 @@ class BodyMessage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // search produk
-          const TextField(
+          TextField(
+            controller: _searchController,
             cursorColor: Colors.black12,
-            decoration: InputDecoration(
+            onChanged: (value) {
+              _getData(value);
+            },
+            decoration: const InputDecoration(
               hintText: 'Cari',
               hintStyle: TextStyle(color: Colors.black12),
               border: OutlineInputBorder(
@@ -49,7 +78,7 @@ class BodyMessage extends StatelessWidget {
           const SizedBox(height: 10),
           Expanded(
             child: ListView.builder(
-              itemCount: 100,
+              itemCount: _messages.length,
               itemBuilder: (context, index) {
                 return Container(
                   margin: const EdgeInsets.only(top: 10),
@@ -62,18 +91,18 @@ class BodyMessage extends StatelessWidget {
                   ),
                   child: GestureDetector(
                     onTap: () {
-                      print('Tapped$index');
-                      Navigator.pushNamed(context, '/detail-message');
+                      // lempar juga idnya ke detaail
+                      Navigator.pushNamed(context, '/detail-message',
+                          arguments: _messages[index]['id']);
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Avatar(
+                        Avatar(
                           width: 50,
                           height: 50,
                           backgroundColor: Colors.grey,
-                          imageUrl:
-                              'https://ik.imagekit.io/8zmr0xxik/Colorful_Gradient_Background_Man_3D_Avatar_4F0kSVV0X.png?updatedAt=1709258633386',
+                          imageUrl: _messages[index]['thumbnail'] ?? '',
                           radius: 25,
                         ),
                         const SizedBox(width: 12),
@@ -86,14 +115,14 @@ class BodyMessage extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Pengguna ${index + 1}',
+                                    _messages[index]['username'] ?? '',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
                                     ),
                                   ),
                                   Text(
-                                    '${index + 1}m yang lalu',
+                                    _messages[index]['time_ago'] ?? '',
                                     style: TextStyle(
                                       color: Colors.grey[600],
                                       fontSize: 10,
@@ -105,7 +134,7 @@ class BodyMessage extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      'Ini adalah preview pesan dari pengguna ${index + 1}...',
+                                      _messages[index]['message'] + '...',
                                       style: TextStyle(
                                         color: Colors.grey[600],
                                         fontSize: 12,
@@ -115,24 +144,16 @@ class BodyMessage extends StatelessWidget {
                                     ),
                                   ),
                                   const SizedBox(width: 4),
-                                  // icon bulat
-                                  Container(
-                                    width: 20,
-                                    height: 20,
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xFF608384),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Center(
-                                      child: Text(
-                                        '12',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                        ),
+                                  // jika belum di baca tampilkan icon bulat
+                                  if (_messages[index]['is_read'] == false)
+                                    Container(
+                                      width: 20,
+                                      height: 20,
+                                      decoration: const BoxDecoration(
+                                        color: Color(0xFF608384),
+                                        shape: BoxShape.circle,
                                       ),
                                     ),
-                                  ),
                                 ],
                               ),
                               const SizedBox(height: 4),

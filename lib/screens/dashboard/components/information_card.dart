@@ -4,26 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class InformationCard extends StatefulWidget {
-  const InformationCard({super.key});
+  final List<Map<String, String>> informationCard;
+  const InformationCard({super.key, required this.informationCard});
 
   @override
   State<InformationCard> createState() => _InformationCardState();
 }
 
 class _InformationCardState extends State<InformationCard> {
-  final List<Map<String, String>> informationCard = [
-    {
-      'icon': 'assets/images/icons/clock.svg',
-      'title': 'Total Kehadiran',
-      'amount': '19'
-    },
-    {
-      'icon': 'assets/images/icons/shield.svg',
-      'title': 'Jumlah Izin',
-      'amount': '10'
-    }
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,7 +19,7 @@ class _InformationCardState extends State<InformationCard> {
         const SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: informationCard
+          children: widget.informationCard
               .map((item) => Container(
                     width: MediaQuery.of(context).size.width * 0.48,
                     padding: const EdgeInsets.symmetric(

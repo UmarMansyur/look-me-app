@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:look_me/components/avatar.dart';
 
 class HeaderDetailScreen extends StatelessWidget {
-  const HeaderDetailScreen({super.key});
+  final Map<String, dynamic> detailMessage;
+
+  const HeaderDetailScreen({
+    super.key,
+    required this.detailMessage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,29 +24,29 @@ class HeaderDetailScreen extends StatelessWidget {
             },
             icon: const Icon(Icons.chevron_left),
           ),
-          const Avatar(
+          Avatar(
             width: 45,
             height: 45,
             backgroundColor: Colors.grey,
-            imageUrl:
-                'https://ik.imagekit.io/8zmr0xxik/Colorful_Gradient_Background_Man_3D_Avatar_4F0kSVV0X.png?updatedAt=1709258633386',
+            imageUrl: detailMessage['thumbnail'] ?? '',
             radius: 20,
             borderColor: Colors.white,
           ),
           const SizedBox(width: 10),
           RichText(
-            text: const TextSpan(
+            text: TextSpan(
               children: [
                 TextSpan(
-                  text: 'Pengguna 1 \n',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87),
+                  text: '${detailMessage['username'] ?? 'Loading...'}\n',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
                 ),
-                TextSpan(
+                const TextSpan(
                   text: 'Online',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Colors.black26,

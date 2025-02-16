@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class ChartCard extends StatelessWidget {
-  const ChartCard({super.key});
+  final List<dynamic> data;
+  const ChartCard({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -74,13 +75,22 @@ class ChartCard extends StatelessWidget {
                             'Apr',
                             'Mei',
                             'Jun',
+                            'Jul',
+                            'Agu',
+                            'Sep',
+                            'Okt',
+                            'Nov',
+                            'Des',
                           ];
-                          return Text(
-                            bulan[value.toInt()],
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
+                          return Transform.rotate(
+                            angle: -0.5, // sekitar 30 derajat
+                            child: Text(
+                              bulan[value.toInt()],
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
                             ),
                           );
                         },
@@ -114,12 +124,9 @@ class ChartCard extends StatelessWidget {
                   ),
                   barGroups: [
                     // Data kehadiran per bulan (contoh data)
-                    _makeBarData(0, 20), // Januari
-                    _makeBarData(1, 18), // Februari
-                    _makeBarData(2, 22), // Maret
-                    _makeBarData(3, 21), // April
-                    _makeBarData(4, 23), // Mei
-                    _makeBarData(5, 19), // Juni
+                    for (var i = 0; i < data.length; i++)
+                      _makeBarData(
+                          data[i]['name'], data[i]['value'].toDouble()),
                   ],
                 ),
               ),
