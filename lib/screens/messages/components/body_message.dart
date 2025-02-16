@@ -91,7 +91,6 @@ class _BodyMessageState extends State<BodyMessage> {
                   ),
                   child: GestureDetector(
                     onTap: () {
-                      // lempar juga idnya ke detaail
                       Navigator.pushNamed(context, '/detail-message',
                           arguments: _messages[index]['id']);
                     },
