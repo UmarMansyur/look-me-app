@@ -5,7 +5,7 @@ import 'package:look_me/store/token.dart';
 
 class Api {
   static final Api _instance = Api._internal();
-  static const String _baseUrl = 'http://192.168.1.64:3000';
+  static const String _baseUrl = 'http://192.168.1.89:3000';
 
   factory Api() => _instance;
 

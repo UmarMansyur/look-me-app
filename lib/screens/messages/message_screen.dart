@@ -17,8 +17,8 @@ class _MessageScreenState extends State<MessageScreen> {
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
-          const HeaderMessage(),
-          const BodyMessage(),
+          HeaderMessage(),
+          BodyMessage(),
         ],
       ),
     );

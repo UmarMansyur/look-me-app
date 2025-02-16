@@ -46,7 +46,7 @@ class HeaderDetailScreen extends StatelessWidget {
                 ),
                 const TextSpan(
                   text: 'Online',
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Colors.black26,

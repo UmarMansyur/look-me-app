@@ -4,7 +4,7 @@ import 'package:look_me/network/api.dart';
 import 'package:look_me/screens/dashboard/components/chart_card.dart';
 import 'package:look_me/screens/dashboard/components/dashboard_header.dart';
 import 'package:look_me/screens/dashboard/components/dashboard_card.dart';
-import 'package:look_me/screens/dashboard/components/history_card.dart';
+// import 'package:look_me/screens/dashboard/components/history_card.dart';
 import 'package:look_me/screens/dashboard/components/information_card.dart';
 
 class DashboardScreen extends StatefulWidget {

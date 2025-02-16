@@ -36,7 +36,7 @@ class _DetailMessageScreenState extends State<DetailMessageScreen> {
         children: [
           SizedBox(height: MediaQuery.of(context).padding.top),
           HeaderDetailScreen(detailMessage: _detailMessage),
-          PopupMessageScreen(),
+          PopupMessageScreen(detailMessage: _detailMessage['message'] ?? ''),
         ],
       ),
     );

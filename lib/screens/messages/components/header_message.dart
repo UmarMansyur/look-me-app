@@ -33,7 +33,7 @@ class _HeaderMessageState extends State<HeaderMessage> {
                   radius: 20,
                   borderColor: Colors.white,
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 const Text(
                   'Pesan',
                   style: TextStyle(
