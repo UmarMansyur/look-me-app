@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:look_me/store/session.dart';
 import 'package:look_me/styles/styles.dart';
+import 'package:provider/provider.dart';
 
 class Parent extends StatefulWidget {
   const Parent({
@@ -48,66 +50,71 @@ class _ParentState extends State<Parent> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: widget.backgroundColor,
-      body: SafeArea(
-        child: Padding(
-          padding: widget.padding,
-          child: widget.child,
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        shape: const CircleBorder(),
-        onPressed: () {
-          Navigator.pushNamed(context, '/scan-face');
-        },
-        backgroundColor: Colors.white,
-        child: Container(
-          decoration: BoxDecoration(
-            color: const Color(0xFF116256),
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFF0B4042).withOpacity(0.1),
-                blurRadius: 45,
-                offset: const Offset(0, 4),
-              ),
-            ],
+    return Consumer<SessionStore>(
+      builder: (context, session, child) {
+        return Scaffold(
+          backgroundColor: widget.backgroundColor,
+          body: SafeArea(
+            child: Padding(
+              padding: widget.padding,
+              child: widget.child,
+            ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(15),
-            child: SvgPicture.asset(
-              'assets/images/icons/face.svg',
-              fit: BoxFit.contain,
-              colorFilter: const ColorFilter.mode(
-                Colors.white,
-                BlendMode.srcIn,
+          floatingActionButton: FloatingActionButton(
+            shape: const CircleBorder(),
+            onPressed: () {
+              Navigator.pushNamed(context, '/scan-face');
+            },
+            backgroundColor: Colors.white,
+            child: Container(
+              decoration: BoxDecoration(
+                color: const Color(0xFF116256),
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF0B4042).withOpacity(0.1),
+                    blurRadius: 45,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: SvgPicture.asset(
+                  'assets/images/icons/face.svg',
+                  fit: BoxFit.contain,
+                  colorFilter: const ColorFilter.mode(
+                    Colors.white,
+                    BlendMode.srcIn,
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        shadowColor: AuthStyles.primaryColor,
-        elevation: 10,
-        shape: const AutomaticNotchedShape(RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: BottomAppBar(
+            color: Colors.white,
+            shadowColor: AuthStyles.primaryColor,
+            elevation: 10,
+            shape: const AutomaticNotchedShape(RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+              ),
+            )),
+            notchMargin: 8,
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(
+                4,
+                (index) => _buildNavItem(index),
+              ),
+            ),
           ),
-        )),
-        notchMargin: 8,
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(
-            4,
-            (index) => _buildNavItem(index),
-          ),
-        ),
-      ),
+        );
+      },
     );
   }
 

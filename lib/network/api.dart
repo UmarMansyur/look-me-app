@@ -2,9 +2,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:look_me/store/token.dart';
+
 class Api {
   static final Api _instance = Api._internal();
-  static const String _baseUrl = 'http://192.168.1.89:3000';
+  static const String _baseUrl = 'http://192.168.1.64:3000';
 
   factory Api() => _instance;
 
@@ -18,16 +19,16 @@ class Api {
   ) async {
     http.Response? response;
     try {
-      
       final headers = {
         'Content-Type': 'application/json',
       };
 
-      if(isAuth) {
-        if(await TokenStore.isTokenExpired('access_token')) {
+      if (isAuth) {
+        if (await TokenStore.isTokenExpired('access_token')) {
           await TokenStore.refreshToken();
         }
-        headers['Authorization'] = 'Bearer ${await TokenStore.getTokenAccess()}';
+        headers['Authorization'] =
+            'Bearer ${await TokenStore.getTokenAccess()}';
       }
 
       final uri = Uri.parse('$_baseUrl/$path');
@@ -66,11 +67,10 @@ class Api {
 
       return json.decode(response.body);
     } catch (e) {
-      print('API ERROR: $e');
-
       return {
         'status': false,
         'message': e.toString(),
+        'data': null,
       };
     }
   }

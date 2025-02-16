@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:look_me/components/avatar.dart';
 import 'package:look_me/components/header_icon.dart';
 import 'package:look_me/format/date/date.dart';
+import 'package:look_me/store/session.dart';
+import 'package:provider/provider.dart';
 
 class DashboardHeader extends StatefulWidget {
   const DashboardHeader({super.key});
@@ -13,6 +15,7 @@ class DashboardHeader extends StatefulWidget {
 class _DashboardHeaderState extends State<DashboardHeader> {
   @override
   Widget build(BuildContext context) {
+    final session = Provider.of<SessionStore>(context, listen: false);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -31,9 +34,9 @@ class _DashboardHeaderState extends State<DashboardHeader> {
             RichText(
               text: TextSpan(
                 children: [
-                  const TextSpan(
-                    text: 'Halo, Umar \n',
-                    style: TextStyle(
+                  TextSpan(
+                    text: 'Halo, ${session.user['username']} \n',
+                    style: const TextStyle(
                       fontSize: 20,
                       color: Colors.black,
                       fontWeight: FontWeight.bold,

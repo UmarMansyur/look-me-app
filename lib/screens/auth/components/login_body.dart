@@ -1,11 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:look_me/network/api/auth.dart';
-import 'package:look_me/store/session.dart';
-import 'package:look_me/store/token.dart';
+import 'package:look_me/screens/auth/components/login_button.dart';
 import 'package:look_me/styles/styles.dart';
-import 'package:provider/provider.dart';
+
 class LoginBody extends StatefulWidget {
   const LoginBody({super.key});
 
@@ -109,37 +105,8 @@ class _LoginBodyState extends State<LoginBody> {
           SizedBox(
             width: double.infinity,
             height: 55.0,
-            child: ElevatedButton(
-              onPressed: () async {
-                final response = await AuthApi.login(emailController.text, passwordController.text);
-                if(response?['status'] == true) {
-                  await TokenStore.saveToken(json.encode(response?['data']));
-                  final data = await TokenStore.decodeToken();
-                  Provider.of<SessionStore>(context, listen: false).setUser({
-                    'id': data?['data']['id'],
-                    'username': data?['data']['username'],
-                    'email': data?['data']['email'],
-                    'phone': data?['data']['phone'],
-                    'date_of_birth': data?['data']['date_of_birth'],
-                    'address': data?['data']['address'],
-                    'thumbnail': data?['data']['thumbnail'],
-                    'gender': data?['data']['gender'],
-                    'institution_id': data?['data']['userInstitutions']?[0]['id'],
-                  });
-                  // Navigator.pushReplacementNamed(context, '/dashboard');
-                } else {
-                  // ignore: use_build_context_synchronously
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(response?['message'] ?? 'Login failed'), backgroundColor: const Color(0xFFE81D1D),),
-                  );
-                }
-              },
-              style: AuthStyles.loginButtonStyle,
-              child: const Text(
-                'Login',
-                style: AuthStyles.buttonTextStyle,
-              ),
-            ),
+            child: LoginButton(
+                email: emailController.text, password: passwordController.text),
           ),
           const SizedBox(height: 5.0),
           Row(
