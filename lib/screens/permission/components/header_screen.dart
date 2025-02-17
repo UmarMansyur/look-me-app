@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:look_me/components/avatar.dart';
+import 'package:look_me/store/session.dart';
+import 'package:provider/provider.dart';
 
 class HeaderScreen extends StatelessWidget {
   const HeaderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final session = Provider.of<SessionStore>(context, listen: false);
     return SizedBox(
       width: double.infinity,
       child: Padding(
@@ -14,19 +17,18 @@ class HeaderScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Row(
+            Row(
               children: [
                 Avatar(
                   width: 45,
                   height: 45,
                   backgroundColor: Colors.grey,
-                  imageUrl:
-                      'https://ik.imagekit.io/8zmr0xxik/Colorful_Gradient_Background_Man_3D_Avatar_4F0kSVV0X.png?updatedAt=1709258633386',
+                  imageUrl: session.user['thumbnail'] ?? '',
                   radius: 20,
                   borderColor: Colors.white,
                 ),
-                SizedBox(width: 20),
-                Text(
+                const SizedBox(width: 20),
+                const Text(
                   'Perizinan',
                   style: TextStyle(
                     fontSize: 30,

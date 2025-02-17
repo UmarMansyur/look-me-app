@@ -10,7 +10,23 @@ class StatusCard extends StatelessWidget {
   final Color statusTextColor;
   final String day;
   final Color backgroundColor;
-  const StatusCard({super.key, required this.title, required this.description, required this.detail, required this.date, required this.status, required this.statusColor, required this.statusTextColor, required this.day, required this.backgroundColor});
+  final String startDate;
+  final String endDate;
+  final String reason;
+  const StatusCard(
+      {super.key,
+      required this.title,
+      required this.description,
+      required this.detail,
+      required this.date,
+      required this.status,
+      required this.statusColor,
+      required this.statusTextColor,
+      required this.day,
+      required this.backgroundColor,
+      required this.startDate,
+      required this.endDate,
+      required this.reason});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +39,7 @@ class StatusCard extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(10),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             padding: const EdgeInsets.all(5),
@@ -31,8 +47,11 @@ class StatusCard extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
             ),
-            width: 55,
-            height: 80,
+            // berikan min width 60 dan min height 80
+            constraints: const BoxConstraints(
+              minWidth: 70,
+              minHeight: 80,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,12 +123,28 @@ class StatusCard extends StatelessWidget {
                   ),
                 ),
                 Text(
+                  '$startDate - $endDate',
+                  style: const TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                Text(
                   detail,
                   style: const TextStyle(
                     fontSize: 9,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
+                // jika alasan ada maka tampilkan alasan
+                if (reason.isNotEmpty)
+                  Text(
+                    'Alasan: $reason',
+                    style: const TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
               ],
             ),
           )

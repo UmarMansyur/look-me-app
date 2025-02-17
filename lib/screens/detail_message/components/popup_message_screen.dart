@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // import 'message_bubble.dart';
 
 class PopupMessageScreen extends StatelessWidget {
-  final String detailMessage;
+  final dynamic detailMessage;
   const PopupMessageScreen({super.key, required this.detailMessage});
 
   @override
@@ -21,52 +21,74 @@ class PopupMessageScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12,
-                  vertical: 4,
-                ),
-                child: Text(
-                  '12 Januari 2025',
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.grey[700],
+                      vertical: 4,
+                    ),
+                    child: Text(
+                      detailMessage['tanggal_created'].toString(),
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[700],
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              ],
+                ],
               ),
 
               // Enhanced message bubble with better styling
-              Container(
-                
-                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-                decoration: BoxDecoration(
-                  color: Colors.grey[50],
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                    bottomLeft: Radius.circular(4),
-                    bottomRight: Radius.circular(20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.grey[200],
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.grey[400],
+                    ),
                   ),
-                  border: Border.all(
-                    color: Colors.grey.withOpacity(0.1),
-                    width: 1,
+                  const SizedBox(width: 8),
+                  Container(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.6,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 10,
+                    ),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFF5F5F5),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16),
+                        topRight: Radius.circular(16),
+                        bottomRight: Radius.circular(16),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 4),
+                        Text(
+                          detailMessage['message'].toString(),
+                          style: TextStyle(
+                            color: Colors.grey[800],
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          detailMessage['created_at'].toString(),
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                child: Text(
-                  detailMessage,
-                  style: const TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 15,
-                    height: 1.5,
-                    color: Colors.black87,
-                    letterSpacing: 0.3,
-                  ),
-                ),
+                ],
               ),
-
-
 
               // Expanded(
               //   child: RawScrollbar(

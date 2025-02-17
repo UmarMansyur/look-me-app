@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:look_me/screens/permission/components/status_card.dart';
 
-class PermissionStatus extends StatelessWidget {
-  const PermissionStatus({super.key});
+class PermissionStatus extends StatefulWidget {
+  final List<Map<String, dynamic>> permissions;
+  const PermissionStatus({super.key, required this.permissions});
 
+  @override
+  State<PermissionStatus> createState() => _PermissionStatusState();
+}
+
+class _PermissionStatusState extends State<PermissionStatus> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
-        itemCount: 10,
+        itemCount: widget.permissions.length,
         padding: const EdgeInsets.all(8.0),
         itemBuilder: (context, index) {
           return Column(
@@ -24,47 +30,67 @@ class PermissionStatus extends StatelessWidget {
                     height: 20,
                   ),
                   const SizedBox(width: 10),
-                  Text(_getFormattedDate(index), style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    fontFamily: 'Poppins',
-                  ),),
+                  Text(
+                    widget.permissions[index]['month'],
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 10),
-              const StatusCard(
-                title: 'Permohonan Izin',
-                description: 'Perjalanan dinas keluar kota untuk 3 hari',
-                detail: 'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
-                date: '29',
-                day: 'Senin',
-                status: 'Menunggu Konfirmasi',
-                statusColor: Colors.white,
-                statusTextColor: Color(0xFF9E6D09),
-                backgroundColor: Color(0xFFFAECD3),
-              ),
-              const StatusCard(
-                title: 'Permohonan Izin (Sakit)',
-                description: 'Sakit kepala',
-                detail: 'Mohon maaf, saya tidak dapat bekerja karena sakit kepala',
-                date: '01',
-                day: 'Selasa',
-                status: 'Disetujui',
-                statusColor: Colors.white,
-                statusTextColor: Color(0xFF3EA03C),
-                backgroundColor: Color(0xFFD3F1D2),
-              ),
-              const StatusCard(
-                title: 'Permohonan Izin',
-                description: 'Mancing di laut',
-                detail: 'Mohon maaf, saya tidak dapat bekerja karena mancing di laut',
-                date: '02',
-                day: 'Rabu',
-                status: 'Ditolak',
-                statusColor: Colors.white,
-                statusTextColor: Color(0xFFE81D1D),
-                backgroundColor: Color(0xFFF1D3D3),
-              ),
+              ...widget.permissions[index]['value'].map((permission) {
+                if (permission['status'] == 'Pending') {
+                  return StatusCard(
+                    title: permission['header'],
+                    description: permission['title'],
+                    detail: permission['desc'] ?? '',
+                    date: permission['date'].toString(),
+                    day: permission['day'],
+                    startDate: permission['start_date'].toString(),
+                    endDate: permission['end_date'].toString(),
+                    status: 'Menunggu Konfirmasi',
+                    reason: permission['reason'] ?? '',
+                    statusColor: Colors.white,
+                    statusTextColor: const Color(0xFF9E6D09),
+                    backgroundColor: const Color(0xFFFAECD3),
+                  );
+                }
+                if (permission['status'] == 'Approved') {
+                  return StatusCard(
+                    title: permission['header'],
+                    description: permission['title'],
+                    detail: permission['desc'] ?? '',
+                    date: permission['date'].toString(),
+                    day: permission['day'],
+                    startDate: permission['start_date'].toString(),
+                    endDate: permission['end_date'].toString(),
+                    status: 'Disetujui',
+                    reason: permission['reason'] ?? '',
+                    statusColor: Colors.white,
+                    statusTextColor: const Color(0xFF3EA03C),
+                    backgroundColor: const Color(0xFFD3F1D2),
+                  );
+                }
+                if (permission['status'] == 'Rejected') {
+                  return StatusCard(
+                    title: permission['header'],
+                    description: permission['title'],
+                    detail: permission['desc'] ?? '',
+                    date: permission['date'].toString(),
+                    day: permission['day'],
+                    startDate: permission['start_date'].toString(),
+                    endDate: permission['end_date'].toString(),
+                    status: 'Ditolak',
+                    reason: permission['reason'] ?? '',
+                    statusColor: Colors.white,
+                    statusTextColor: const Color(0xFFE81D1D),
+                    backgroundColor: const Color(0xFFF1D3D3),
+                  );
+                }
+              }),
             ],
           );
         },
@@ -80,8 +106,18 @@ class PermissionStatus extends StatelessWidget {
 
   String _getIndonesianMonth(int month) {
     const months = [
-      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+      'Januari',
+      'Februari',
+      'Maret',
+      'April',
+      'Mei',
+      'Juni',
+      'Juli',
+      'Agustus',
+      'September',
+      'Oktober',
+      'November',
+      'Desember'
     ];
     return months[month - 1];
   }

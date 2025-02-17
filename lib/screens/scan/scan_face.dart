@@ -2,12 +2,15 @@
 
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:http/http.dart' as http;
+import 'package:geolocator/geolocator.dart';
+import 'package:look_me/store/token.dart';
 
 class ScanFace extends StatefulWidget {
   const ScanFace({super.key});
@@ -41,7 +44,6 @@ class _ScanFaceState extends State<ScanFace> {
     final scale = _getCameraScale(previewSize);
     final scaledWidth = face.boundingBox.width * scale;
 
-  
     final MIN_SCALED_SIZE = MIN_FACE_SIZE * scale;
     final MAX_SCALED_SIZE = MAX_FACE_SIZE * scale;
 
@@ -49,11 +51,11 @@ class _ScanFaceState extends State<ScanFace> {
       if (scaledWidth < MIN_SCALED_SIZE) {
         _faceDistanceStatus = 'Terlalu Jauh! Mohon mendekat';
         _statusColor = Colors.red;
-        _isFaceDetected = false;
+        _isFaceDetected = true;
       } else if (scaledWidth > MAX_SCALED_SIZE) {
         _faceDistanceStatus = 'Terlalu Dekat! Mohon menjauh';
         _statusColor = Colors.red;
-        _isFaceDetected = false;
+        _isFaceDetected = true;
       } else {
         _faceDistanceStatus = 'Jarak Sudah Tepat, Silahkan Kedipkan Mata Anda!';
         _statusColor = const Color(0xFF2CD097);
@@ -76,12 +78,15 @@ class _ScanFaceState extends State<ScanFace> {
   Map<String, dynamic>? _existingFaceData;
   bool _isComparingFace = false;
 
+  Position? _currentPosition;
+
   @override
   void initState() {
     super.initState();
     _initializeCamera();
     _initializeFaceDetector();
     _checkExistingFaceData();
+    _getCurrentLocation();
   }
 
   void _initializeFaceDetector() {
@@ -97,15 +102,26 @@ class _ScanFaceState extends State<ScanFace> {
   Future<void> _checkExistingFaceData() async {
     try {
       final response = await http.get(
-        Uri.parse('https://api2.sinikendp.com/faceku'),
-        headers: {'Content-Type': 'application/json'},
+        Uri.parse('http://192.168.1.64:3000/attendance/my-face'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${await TokenStore.getTokenAccess()}'
+        },
       );
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+      final data = jsonDecode(response.body);
+
+      if (data['data'] != null) {
         setState(() {
-          _existingFaceData = data;
+          _existingFaceData = {
+            'data': data['data'],
+            'status': data['status'],
+          };
           _isComparingFace = true;
+        });
+      } else {
+        setState(() {
+          _isComparingFace = false;
         });
       }
     } catch (e) {
@@ -113,44 +129,135 @@ class _ScanFaceState extends State<ScanFace> {
     }
   }
 
-  Future<void> _saveFaceData() async {
+  Future<void> _getCurrentLocation() async {
     try {
+      // Check if location services are enabled
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        _handleError(
+            'Location services are disabled. Please enable location services.');
+        return;
+      }
+
+      // Check and request permissions
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          _handleError('Location permission denied');
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        _handleError(
+            'Location permissions are permanently denied. Please enable them in settings.');
+        return;
+      }
+
+      // Get position with timeout
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+        timeLimit: const Duration(seconds: 5),
+      );
+
+      if (mounted) {
+        setState(() {
+          _currentPosition = position;
+        });
+      }
+    } catch (e) {
+      _handleError('Error getting location: $e');
+    }
+  }
+
+  Future<void> _saveFaceData() async {
+    // Show loading dialog first
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(
+                color: Color(0xFF2CD097),
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Memproses data...',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    try {
+      await _cameraController?.stopImageStream();
+
+      // Check if location is available
+      if (_currentPosition == null) {
+        _handleError(
+            'Location data is not available. Please ensure location services are enabled.');
+        return;
+      }
+
       final jsonData = jsonEncode({
         'measurements': _faceDataComplete['measurements'],
+        // 'lat': _currentPosition!.latitude,
+        // 'long': _currentPosition!.longitude,
       });
 
       final bodyData = {
         'data': jsonData,
+        if (_isComparingFace) 'lat': _currentPosition!.latitude,
+        if (_isComparingFace) 'long': _currentPosition!.longitude,
         if (_isComparingFace) 'existingData': _existingFaceData,
       };
 
-      final endpoint = _isComparingFace ? '/compare' : '/';
+      final endpoint =
+          _isComparingFace ? '/attendance' : '/attendance/save-face';
       final response = await http.post(
-        Uri.parse('https://api2.sinikendp.com$endpoint'),
-        headers: {'Content-Type': 'application/json'},
+        Uri.parse('http://192.168.1.64:3000$endpoint'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${await TokenStore.getTokenAccess()}'
+        },
         body: jsonEncode(bodyData),
       );
 
       final data = jsonDecode(response.body);
 
       if (mounted) {
+        // Close loading dialog
+        Navigator.pop(context);
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
               '${data['message']}',
             ),
-            backgroundColor: data['status'] == 'success'
-                ? const Color(0xFF2CD097)
-                : Colors.red,
+            backgroundColor:
+                data['status'] == true ? const Color(0xFF2CD097) : Colors.red,
           ),
         );
 
-        await _cameraController?.stopImageStream();
+        // Clean up and exit
         await _cameraController?.dispose();
         await _faceDetector?.close();
         Navigator.of(context).pop();
       }
     } catch (e) {
+      // Close loading dialog on error
+      if (mounted) {
+        Navigator.pop(context);
+      }
       _handleError('Error processing face data: $e');
     }
   }
@@ -175,7 +282,7 @@ class _ScanFaceState extends State<ScanFace> {
     int frameSkip = 0;
     _cameraController!.startImageStream((image) {
       frameSkip++;
-      if (frameSkip % 10 == 0) {
+      if (frameSkip % 5 == 0) {
         _processCameraImage(image);
       }
     });
@@ -189,37 +296,29 @@ class _ScanFaceState extends State<ScanFace> {
     if (_isProcessingBlink) return;
 
     try {
-      final WriteBuffer allBytes = WriteBuffer();
-      for (final Plane plane in image.planes) {
-        allBytes.putUint8List(plane.bytes);
-      }
-      final bytes = allBytes.done().buffer.asUint8List();
-
-      final Size imageSize =
-          Size(image.width.toDouble(), image.height.toDouble());
-      final camera = _cameraController!.description;
-      final imageRotation =
-          InputImageRotationValue.fromRawValue(camera.sensorOrientation) ??
-              InputImageRotation.rotation0deg;
-
-      final platform = defaultTargetPlatform;
-
-      InputImageFormat inputImageFormat;
-
-      if (platform == TargetPlatform.android) {
-        inputImageFormat = InputImageFormat.nv21;
-      } else if (platform == TargetPlatform.iOS) {
-        inputImageFormat = InputImageFormat.bgra8888;
+      final InputImageFormat format;
+      if (Platform.isAndroid) {
+        format = InputImageFormat.nv21;
+      } else if (Platform.isIOS) {
+        format = InputImageFormat.bgra8888;
       } else {
         throw Exception('Unsupported platform');
       }
 
       final inputImageData = InputImageMetadata(
-        size: imageSize,
-        rotation: imageRotation,
-        format: inputImageFormat,
+        size: Size(image.width.toDouble(), image.height.toDouble()),
+        rotation: InputImageRotationValue.fromRawValue(
+                _cameraController!.description.sensorOrientation) ??
+            InputImageRotation.rotation0deg,
+        format: format,
         bytesPerRow: image.planes[0].bytesPerRow,
       );
+
+      final WriteBuffer allBytes = WriteBuffer();
+      for (final Plane plane in image.planes) {
+        allBytes.putUint8List(plane.bytes);
+      }
+      final bytes = allBytes.done().buffer.asUint8List();
 
       final inputImage = InputImage.fromBytes(
         bytes: bytes,
@@ -241,7 +340,7 @@ class _ScanFaceState extends State<ScanFace> {
           _faceRect = face.boundingBox;
         });
 
-        if (_currentStep == 0 && _isFaceDetected && _faceDistanceStatus == 'Jarak Sudah Tepat!' && _detectBlink(face)) {
+        if (_detectBlink(face)) {
           await _handleBlinkDetection();
         }
       } else {
@@ -322,7 +421,8 @@ class _ScanFaceState extends State<ScanFace> {
 
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Kedipan $_blinkCount terdeteksi, Silahkan Kedipkan Mata Anda Kembali!'),
+              content: Text(
+                  'Kedipan $_blinkCount terdeteksi, Silahkan Kedipkan Mata Anda Kembali!'),
               duration: const Duration(milliseconds: 500),
               backgroundColor: const Color(0xFF2CD097),
             ),
@@ -468,6 +568,8 @@ class _ScanFaceState extends State<ScanFace> {
                       color: _statusColor,
                     ),
                   ),
+                  Text("Lat: ${_currentPosition?.latitude}"),
+                  Text("Lng: ${_currentPosition?.longitude}"),
                   Text(
                     'Jarak Wajah: $_currentFaceDistance',
                     style: const TextStyle(fontSize: 18),
